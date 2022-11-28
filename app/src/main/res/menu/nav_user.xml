@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/showAll"
+            android:icon="@drawable/book"
+            android:title="showAll"
+            app:showAsAction="ifRoom"></item>
+        <item
+            android:id="@+id/showMy"
+            android:icon="@drawable/book"
+            android:title="showMy"
+            app:showAsAction="ifRoom"></item>
+    </group>
+
+</menu>
