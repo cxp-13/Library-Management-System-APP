@@ -9,6 +9,7 @@ import com.permissionx.librarymanagementsystem.LibraryManagementSystemApplicatio
 import com.permissionx.librarymanagementsystem.logic.model.UserResponse
 
 object UserSPDao {
+
     // TODO: 用户登录的逻辑和函数的参数存在问题 
     fun getUser(name:String): UserResponse.User {
         val user = sharePreference().getString(name, "")
@@ -16,14 +17,12 @@ object UserSPDao {
     }
 
     fun saveUser(user: UserResponse.User) {
-
         sharePreference().edit {
             putString(user.name, Gson().toJson(user))
         }
     }
 
     fun isUserSaved(name:String) = sharePreference().contains(name)
-
 
     fun sharePreference(): SharedPreferences {
         return LibraryManagementSystemApplication.context.getSharedPreferences(
