@@ -22,7 +22,11 @@ object UserSPDao {
         }
     }
 
-    fun isUserSaved(name:String) = sharePreference().contains(name)
+    fun isUserSaved(name:String, pwd:String):Boolean {
+        return sharePreference().contains(name) &&
+                getUser(name).password == pwd
+
+    }
 
     fun sharePreference(): SharedPreferences {
         return LibraryManagementSystemApplication.context.getSharedPreferences(

@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
             }
 
-//             todo:完成注册和登录的功能
+            //             打开前监测是否有用户登录，有则显示其信息
             override fun onDrawerOpened(drawerView: View) {
                 val navigationView = drawerView.findViewById<NavigationView>(R.id.nav_user)
 
@@ -51,14 +51,14 @@ class MainActivity : AppCompatActivity() {
                 val username = headView?.findViewById<TextView>(R.id.username)
                 val email = headView?.findViewById<TextView>(R.id.email)
 
-                val user = userModel.user.value
 
-                val saved = userModel.isUserSaved(user!!.name)
+                val saved = userModel.user.value != null
 
                 if (saved) {
-                    val user = userModel.getUser(user.name)
-                    username?.text = user.name
-                    email?.text = user.password.toString()
+                    val user = userModel.user.value
+
+                    username?.text = user?.name
+                    email?.text = user?.password
 
                 }
             }

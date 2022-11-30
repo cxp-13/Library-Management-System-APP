@@ -10,8 +10,8 @@ import com.permissionx.librarymanagementsystem.logic.model.UserResponse
 interface UserDao {
 
     @Query("select * from user where name = :name limit 1")
-    fun getUser(name:String): UserResponse.User
+   suspend fun getUser(name:String): UserResponse.User
 
     @Insert
-    fun saveUser(user: UserResponse.User)
+    suspend fun saveUser(user: UserResponse.User)
 }
