@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.permissionx.librarymanagementsystem.R
 import com.permissionx.librarymanagementsystem.databinding.FragmentLoginBinding
-import com.permissionx.librarymanagementsystem.databinding.FragmentUserBinding
 import com.permissionx.librarymanagementsystem.logic.model.UserResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,25 +47,30 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.loginBtn.setOnClickListener {
-            val userName = binding.name.text.toString()
+            val userName = binding.loginUsername.editText?.text.toString()
+            val password = binding.loginUsername.editText?.text.toString()
 
             lifecycleScope.launch {
+//                network
+//                userModel.login(userName, password)
+//                database
                 val user = userModel.getUserDataBase(userName)
                 if (user != null) {
-                    userModel.user.value = userModel.getUserDataBase(userName)
+                    userModel.setUser(user)
                     Snackbar.make(view, "Log in successfully", Snackbar.LENGTH_SHORT).show()
                 } else {
-                    Snackbar.make(view, "The user name or password is incorrect", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(
+                        view,
+                        "The user name or password is incorrect",
+                        Snackbar.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
-
-
         }
-
         binding.registerBtn.setOnClickListener {
-            val userName = binding.name.text.toString()
-            val pwd = binding.pwd.text.toString()
+            val userName = binding.loginUsername.editText?.text.toString()
+            val pwd = binding.loginPwd.editText?.text.toString()
 //            if (userModel.isUserSaved(userName, pwd)) {
 //                Snackbar.make(view, "The user is registered", Snackbar.LENGTH_SHORT).show()
 //            } else {
@@ -81,8 +85,6 @@ class LoginFragment : Fragment() {
                     Snackbar.make(view, "The user is registered", Snackbar.LENGTH_SHORT).show()
                 } else {
                     userModel.saveUserDataBase(UserResponse.User(name = userName, password = pwd))
-                    binding.name.setText("")
-                    binding.pwd.setText("")
                     Snackbar.make(view, "Registration succeeded", Snackbar.LENGTH_SHORT).show()
                 }
             }

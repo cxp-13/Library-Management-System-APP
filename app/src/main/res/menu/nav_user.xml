@@ -5,12 +5,12 @@
 
 
         <item
-            android:id="@+id/showAll"
+            android:id="@+id/bookFragment"
             android:icon="@drawable/book"
             android:title="showAll"
             app:showAsAction="ifRoom"></item>
         <item
-            android:id="@+id/showMy"
+            android:id="@+id/myBookFragment"
             android:icon="@drawable/book"
             android:title="showMy"
             app:showAsAction="ifRoom"></item>

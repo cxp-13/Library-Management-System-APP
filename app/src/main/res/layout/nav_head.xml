@@ -16,18 +16,17 @@
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/email"
-        android:text="fdsfsddsdgdfg"
+        android:layout_above="@+id/user_id"
+        android:text="cxp"
         android:textColor="#3f3f3f"
         android:textSize="20sp"></TextView>
 
     <TextView
-        android:id="@+id/email"
+        android:id="@+id/user_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="16588555@qq.com"
         android:layout_alignParentBottom="true"
-
+        android:text="201907020513"
         android:textColor="#3f3f3f"
         android:textSize="13sp"></TextView>
 </RelativeLayout>

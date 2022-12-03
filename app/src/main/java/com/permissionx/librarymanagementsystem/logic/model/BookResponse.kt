@@ -13,16 +13,14 @@ data class BookResponse(
 
     @Entity
     data class Book(
-        @PrimaryKey val id: Long,
-        val body: String,
-        @SerializedName("book_borrowers_id") @ColumnInfo(name = "book_borrowers_id") val bookBorrowersId: Long,
-        @SerializedName("bookshelf_location") @ColumnInfo(name = "bookshelf_location") val bookshelfLocation: String,
-        val category: String,
-        val count: Long,
-        @SerializedName("return_time") @ColumnInfo(name = "return_time") val returnTime: Date,
+        @PrimaryKey(autoGenerate = true) val id: Long = 0,
+        val body: String = "",
+        @SerializedName("book_borrowers_id") @ColumnInfo(name = "book_borrowers_id") val bookBorrowersId: Long = 0,
+        @SerializedName("bookshelf_location") @ColumnInfo(name = "bookshelf_location") val bookshelfLocation: String = "",
+        val category: String = "",
+        val count: Long = 0,
+        @SerializedName("return_time") @ColumnInfo(name = "return_time") val returnTime: String = "",
         val title: String,
-
-
     )
 
     data class Meta(

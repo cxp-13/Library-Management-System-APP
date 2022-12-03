@@ -3,12 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/bookFragment">
 
-
+    <fragment
+        android:id="@+id/bookFragment"
+        android:name="com.permissionx.librarymanagementsystem.ui.book.BookFragment"
+        android:label="fragment_book"
+        tools:layout="@layout/fragment_book" >
+        <action
+            android:id="@+id/action_bookFragment_to_addBookFragment"
+            app:destination="@id/addBookFragment" />
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.permissionx.librarymanagementsystem.ui.user.LoginFragment"
+        tools:layout="@layout/fragment_login"
         android:label="LoginFragment" />
-
+    <fragment
+        android:id="@+id/addBookFragment"
+        android:name="com.permissionx.librarymanagementsystem.ui.book.AddBookFragment"
+        android:label="fragment_add_book"
+        tools:layout="@layout/fragment_add_book" />
+    <fragment
+        android:id="@+id/myBookFragment"
+        android:name="com.permissionx.librarymanagementsystem.ui.book.MyBookFragment"
+        android:label="fragment_my_book"
+        tools:layout="@layout/fragment_my_book" />
 </navigation>

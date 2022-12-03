@@ -2,6 +2,7 @@ package com.permissionx.librarymanagementsystem
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -13,6 +14,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.*
 import com.google.android.material.navigation.NavigationView
 import com.permissionx.librarymanagementsystem.databinding.ActivityMainBinding
 import com.permissionx.librarymanagementsystem.ui.user.UserModel
@@ -21,6 +24,8 @@ class MainActivity : AppCompatActivity() {
 
 
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
 
     private val userModel by lazy {
@@ -38,29 +43,42 @@ class MainActivity : AppCompatActivity() {
             it?.setHomeAsUpIndicator(R.drawable.user)
         }
 
+
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        appBarConfiguration = AppBarConfiguration(navController.graph, binding.drawerLayout)
+
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        navigationView.setupWithNavController(navController)
+
+//
+//        navigationView.setNavigationItemSelectedListener {
+//            when (it.itemId) {
+//                 -> {}
+//                else -> {}
+//            }
+//        }
+
+
+
+//抽屉导航栏
         binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+                val navigationView = drawerView.findViewById<NavigationView>(R.id.nav_view)
+                val headView = navigationView.getHeaderView(0)
+                val username = headView?.findViewById<TextView>(R.id.username)
+                val userId = headView?.findViewById<TextView>(R.id.user_id)
+                val user = userModel.getUser()
+                if (user != null) {
+                    username?.text = user?.name
+                    userId?.text = user?.password
+                }
             }
-
             //             打开前监测是否有用户登录，有则显示其信息
             override fun onDrawerOpened(drawerView: View) {
-                val navigationView = drawerView.findViewById<NavigationView>(R.id.nav_user)
-
-                val headView = navigationView.getHeaderView(0)
-
-                val username = headView?.findViewById<TextView>(R.id.username)
-                val email = headView?.findViewById<TextView>(R.id.email)
-
-
-                val saved = userModel.user.value != null
-
-                if (saved) {
-                    val user = userModel.user.value
-
-                    username?.text = user?.name
-                    email?.text = user?.password
-
-                }
             }
 
             override fun onDrawerClosed(drawerView: View) {
@@ -76,20 +94,37 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar, menu)
+
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                binding.drawerLayout.openDrawer(GravityCompat.START)
-            }
-//            R.id.login->{
-//                val navController = this.findNavController(R.id.nav_host_fragment)
-//                navController.navigate(R.)
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//
+//        val navController = findNavController(R.id.nav_host_fragment)
+//        item.onNavDestinationSelected(navController)
+//
+//        when (item.itemId) {
+//            android.R.id.home -> {
+//                binding.drawerLayout.openDrawer(GravityCompat.START)
 //            }
-        }
-        return true
+////            R.id.login->{
+////                val navController = this.findNavController(R.id.nav_host_fragment)
+////                navController.navigate(R.)
+////            }
+//        }
+//        return true
+//    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        Log.d("test", "onOptionsItemSelected: ${item.title}")
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+    }
+
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
 

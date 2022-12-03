@@ -9,7 +9,7 @@
         app:showAsAction="ifRoom"></item>
 
     <item
-        android:id="@+id/login"
+        android:id="@+id/loginFragment"
         android:icon="@drawable/login"
         android:title="login"
         app:showAsAction="ifRoom"></item>
