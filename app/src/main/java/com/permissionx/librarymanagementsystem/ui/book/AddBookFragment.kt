@@ -9,10 +9,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.permissionx.librarymanagementsystem.R
 import com.permissionx.librarymanagementsystem.databinding.FragmentAddBookBinding
 import com.permissionx.librarymanagementsystem.logic.model.BookResponse
+import com.permissionx.librarymanagementsystem.util.showSnackbar
 import kotlinx.coroutines.launch
 
 class AddBookFragment : Fragment() {
@@ -74,6 +76,11 @@ class AddBookFragment : Fragment() {
                         category = type
                     )
                 )
+            }
+
+            binding!!.addBookBtn.showSnackbar("The book is added successfully", "examine") {
+                val navController = findNavController()
+                navController.navigate(R.id.action_addBookFragment_to_bookFragment)
             }
 
 

@@ -8,13 +8,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.Orientation
+import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.permissionx.librarymanagementsystem.R
 import com.permissionx.librarymanagementsystem.databinding.FragmentBookBinding
 import com.permissionx.librarymanagementsystem.databinding.FragmentMyBookBinding
 import com.permissionx.librarymanagementsystem.logic.model.BookResponse
 import com.permissionx.librarymanagementsystem.ui.user.UserModel
+import com.permissionx.librarymanagementsystem.util.showSnackbar
 import kotlinx.coroutines.launch
 
 
@@ -25,10 +30,11 @@ class MyBookFragment : Fragment() {
         fun newInstance() = BookFragment()
     }
 
-    private lateinit var viewModel: BookViewModel
+    private val viewModel by activityViewModels<BookViewModel>()
     private val userModel by activityViewModels<UserModel>()
     private var _binding: FragmentMyBookBinding? = null
     private val binding get() = _binding
+    var navController: NavController? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,25 +48,25 @@ class MyBookFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this)[BookViewModel::class.java]
+//        viewModel = ViewModelProvider(this)[BookViewModel::class.java]
 
 
         var books = ArrayList<BookResponse.Book>()
-
+        navController = findNavController()
 //        图书列表展示
         lifecycleScope.launch() {
             val user = userModel.getUser()
             if (user == null) {
-                books.addAll(viewModel.getAllBooks()!!)
+                binding?.root?.showSnackbar("The user is not logged in")
             } else {
                 books.addAll(viewModel.getAllBooksById(user.id)!!)
             }
-            val bookAdapter = BookAdapter(books)
-            val gridLayoutManager = GridLayoutManager(newInstance().context, 4)
+            val bookAdapter = BookAdapter(books, viewModel, navController!!)
+            val linearLayoutManager =
+                LinearLayoutManager(newInstance().context, LinearLayoutManager.VERTICAL, true)
             val recyclerView = binding?.recyclerView
-            recyclerView?.layoutManager = gridLayoutManager
+            recyclerView?.layoutManager = linearLayoutManager
             recyclerView?.adapter = bookAdapter
-
         }
     }
 

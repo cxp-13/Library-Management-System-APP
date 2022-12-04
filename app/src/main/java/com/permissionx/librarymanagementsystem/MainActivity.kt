@@ -1,6 +1,7 @@
 package com.permissionx.librarymanagementsystem
 
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+        window.statusBarColor = Color.TRANSPARENT
 
         supportActionBar.let {
             it?.setDisplayHomeAsUpEnabled(true)

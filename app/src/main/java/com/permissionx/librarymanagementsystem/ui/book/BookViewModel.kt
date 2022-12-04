@@ -11,6 +11,8 @@ class BookViewModel : ViewModel() {
 
     val booksLiveData = MutableLiveData<List<BookResponse.Book>>()
 
+    val bookLiveData = MutableLiveData<BookResponse.Book>()
+
     suspend fun getAllBooks() =
         Repository.getAllBook()
 

@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_bookFragment_to_addBookFragment"
             app:destination="@id/addBookFragment" />
+        <action
+            android:id="@+id/action_bookFragment_to_bookInfoFragment"
+            app:destination="@id/bookInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -23,10 +26,19 @@
         android:id="@+id/addBookFragment"
         android:name="com.permissionx.librarymanagementsystem.ui.book.AddBookFragment"
         android:label="fragment_add_book"
-        tools:layout="@layout/fragment_add_book" />
+        tools:layout="@layout/fragment_add_book" >
+        <action
+            android:id="@+id/action_addBookFragment_to_bookFragment"
+            app:destination="@id/bookFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myBookFragment"
         android:name="com.permissionx.librarymanagementsystem.ui.book.MyBookFragment"
         android:label="fragment_my_book"
         tools:layout="@layout/fragment_my_book" />
+    <fragment
+        android:id="@+id/bookInfoFragment"
+        android:name="com.permissionx.librarymanagementsystem.ui.book.BookInfoFragment"
+        android:label="fragment_book_info"
+        tools:layout="@layout/fragment_book_info" />
 </navigation>
