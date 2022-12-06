@@ -15,11 +15,11 @@ data class BookResponse(
     data class Book(
         @PrimaryKey(autoGenerate = true) val id: Long = 0,
         val body: String = "",
-        @SerializedName("book_borrowers_id") @ColumnInfo(name = "book_borrowers_id") val bookBorrowersId: Long = 0,
+        @SerializedName("book_borrowers_id") @ColumnInfo(name = "book_borrowers_id") var bookBorrowersId: Long = 0,
         @SerializedName("bookshelf_location") @ColumnInfo(name = "bookshelf_location") val bookshelfLocation: String = "",
         val category: String = "",
         val count: Long = 0,
-        @SerializedName("return_time") @ColumnInfo(name = "return_time") val returnTime: String = "",
+        @SerializedName("return_date") @ColumnInfo(name = "return_date") var returnDate: Long = 0,
         val title: String,
     )
 

@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
             it?.setHomeAsUpIndicator(R.drawable.user)
         }
 
+        userModel.supportFragmentManager = supportFragmentManager
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -65,7 +66,6 @@ class MainActivity : AppCompatActivity() {
 //        }
 
 
-
 //抽屉导航栏
         binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity() {
                     userId?.text = user?.password
                 }
             }
+
             //             打开前监测是否有用户登录，有则显示其信息
             override fun onDrawerOpened(drawerView: View) {
             }

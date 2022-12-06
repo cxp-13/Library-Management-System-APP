@@ -2,6 +2,7 @@ package com.permissionx.librarymanagementsystem.ui.book
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.permissionx.librarymanagementsystem.logic.Repository
 import com.permissionx.librarymanagementsystem.logic.model.BookResponse
@@ -9,9 +10,18 @@ import com.permissionx.librarymanagementsystem.logic.model.BookResponse
 class BookViewModel : ViewModel() {
 
 
-    val booksLiveData = MutableLiveData<List<BookResponse.Book>>()
-
+    //当前选中的图书
     val bookLiveData = MutableLiveData<BookResponse.Book>()
+
+    private val queryTitle = MutableLiveData<String>()
+
+
+    val books = ArrayList<BookResponse.Book>()
+
+    val booksLiveData: LiveData<List<BookResponse.Book>> =
+        Transformations.switchMap(queryTitle) {
+            Repository.searchBook(it)
+        }
 
     suspend fun getAllBooks() =
         Repository.getAllBook()
@@ -25,6 +35,8 @@ class BookViewModel : ViewModel() {
 
     suspend fun updateBook(book: BookResponse.Book) = Repository.updateBook(book)
 
-    suspend fun searchBook(title: String) = Repository.searchBook(title)
+     fun searchBook(title: String) {
+        queryTitle.value = title
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.permissionx.librarymanagementsystem.ui.user
 
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -12,6 +13,7 @@ class UserModel : ViewModel() {
 
     private var user = MutableLiveData<UserResponse.User>()
 
+    var supportFragmentManager: FragmentManager? = null
 
 
     val username = ""
@@ -30,9 +32,8 @@ class UserModel : ViewModel() {
         this.user.value = user
     }
 
+    // TODO: 给外界的数据应该不变
     fun getUser() = this.user.value
-
-
 
 
     fun getUser(name: String): UserResponse.User = Repository.getUser(name)

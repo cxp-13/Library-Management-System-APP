@@ -33,10 +33,17 @@
         <TextView
             android:id="@+id/book_type"
             android:layout_width="match_parent"
-
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:textSize="10sp"></TextView>
+        <TextView
+            android:id="@+id/book_return_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:inputType="date"
+            android:textSize="15sp"></TextView>
+
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

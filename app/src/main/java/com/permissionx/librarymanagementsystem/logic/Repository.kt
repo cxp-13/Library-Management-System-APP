@@ -58,15 +58,20 @@ object Repository {
         }
     }
 
-    suspend fun searchBook(title: String) =
-        withContext(Dispatchers.IO) {
-            bookDao?.searchBook(title)
+    fun searchBook(title: String) =
+        liveData(Dispatchers.IO) {
+            val books =
+                bookDao?.searchBook(title)
+
+            if (books != null) {
+                this.emit(books)
+            }
         }
+
 
     suspend fun getAllBook() = withContext(Dispatchers.IO) {
         bookDao?.getAllBook()
     }
-
 
 
     suspend fun getAllBookById(userId: Long) = withContext(Dispatchers.IO) {

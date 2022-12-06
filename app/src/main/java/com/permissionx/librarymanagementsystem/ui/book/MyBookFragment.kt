@@ -49,8 +49,6 @@ class MyBookFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 //        viewModel = ViewModelProvider(this)[BookViewModel::class.java]
-
-
         var books = ArrayList<BookResponse.Book>()
         navController = findNavController()
 //        图书列表展示
@@ -61,9 +59,9 @@ class MyBookFragment : Fragment() {
             } else {
                 books.addAll(viewModel.getAllBooksById(user.id)!!)
             }
-            val bookAdapter = BookAdapter(books, viewModel, navController!!)
+            val bookAdapter = BookAdapter(books, viewModel, navController!!, true)
             val linearLayoutManager =
-                LinearLayoutManager(newInstance().context, LinearLayoutManager.VERTICAL, true)
+                LinearLayoutManager(newInstance().context, LinearLayoutManager.VERTICAL, false)
             val recyclerView = binding?.recyclerView
             recyclerView?.layoutManager = linearLayoutManager
             recyclerView?.adapter = bookAdapter

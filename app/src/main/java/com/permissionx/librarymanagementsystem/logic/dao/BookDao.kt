@@ -11,8 +11,8 @@ import com.permissionx.librarymanagementsystem.logic.model.BookResponse
 
 @Dao
 interface BookDao {
-    @Query("select * from Book where title = :title limit 1 ")
-    suspend fun searchBook(title: String): BookResponse.Book
+    @Query("select * from Book where title like '%' || :title || '%'")
+    suspend fun searchBook(title: String): List<BookResponse.Book>
 
     @Insert
     suspend fun addBook(book: BookResponse.Book)

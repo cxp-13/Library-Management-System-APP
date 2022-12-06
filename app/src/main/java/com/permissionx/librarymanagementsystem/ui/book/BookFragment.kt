@@ -55,7 +55,7 @@ class BookFragment : Fragment() {
                 viewModel.getAllBooks()!!
             books.addAll(allBooks)
             navController = findNavController()
-            val bookAdapter = BookAdapter(books, viewModel, navController!!)
+            val bookAdapter = BookAdapter(books, viewModel, navController!!, false)
             val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, VERTICAL)
             val gridLayoutManager = GridLayoutManager(newInstance().context, 4)
             val recyclerView = binding?.recyclerView

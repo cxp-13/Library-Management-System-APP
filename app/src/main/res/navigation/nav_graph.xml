@@ -35,10 +35,22 @@
         android:id="@+id/myBookFragment"
         android:name="com.permissionx.librarymanagementsystem.ui.book.MyBookFragment"
         android:label="fragment_my_book"
-        tools:layout="@layout/fragment_my_book" />
+        tools:layout="@layout/fragment_my_book" >
+        <action
+            android:id="@+id/action_myBookFragment_to_bookInfoFragment"
+            app:destination="@id/bookInfoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/bookInfoFragment"
         android:name="com.permissionx.librarymanagementsystem.ui.book.BookInfoFragment"
         android:label="fragment_book_info"
-        tools:layout="@layout/fragment_book_info" />
+        tools:layout="@layout/fragment_book_info" >
+        <argument
+            android:name="isShowBorrowBtn"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/queryBookFragment"
+        android:name="com.permissionx.librarymanagementsystem.ui.book.QueryBookFragment"
+        android:label="QueryBookFragment" />
 </navigation>
