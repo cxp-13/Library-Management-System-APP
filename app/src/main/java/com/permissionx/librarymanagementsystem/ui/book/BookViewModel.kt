@@ -15,6 +15,12 @@ class BookViewModel : ViewModel() {
 
     private val queryTitle = MutableLiveData<String>()
 
+    //展示的全部图书
+    private val _showBooks = MutableLiveData<List<BookResponse.Book>>()
+
+    val showBooks: LiveData<List<BookResponse.Book>>
+        get() = _showBooks
+
 
     val books = ArrayList<BookResponse.Book>()
 
@@ -23,8 +29,9 @@ class BookViewModel : ViewModel() {
             Repository.searchBook(it)
         }
 
-    suspend fun getAllBooks() =
-        Repository.getAllBook()
+    suspend fun getAllBooks() {
+        _showBooks.value = Repository.getAllBook()
+    }
 
     suspend fun getAllBooksById(id: Long) =
         Repository.getAllBookById(id)
@@ -35,7 +42,7 @@ class BookViewModel : ViewModel() {
 
     suspend fun updateBook(book: BookResponse.Book) = Repository.updateBook(book)
 
-     fun searchBook(title: String) {
+    fun searchBook(title: String) {
         queryTitle.value = title
     }
 
