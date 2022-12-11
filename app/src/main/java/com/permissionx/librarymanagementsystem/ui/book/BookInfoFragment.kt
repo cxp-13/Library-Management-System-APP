@@ -12,6 +12,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.permissionx.librarymanagementsystem.R
 import com.permissionx.librarymanagementsystem.databinding.FragmentBookBinding
 import com.permissionx.librarymanagementsystem.databinding.FragmentBookInfoBinding
+import com.permissionx.librarymanagementsystem.logic.model.UserResponse
 import com.permissionx.librarymanagementsystem.ui.user.UserModel
 import com.permissionx.librarymanagementsystem.util.showSnackbar
 import kotlinx.coroutines.launch
@@ -57,7 +58,7 @@ class BookInfoFragment : Fragment() {
 //图书借阅按钮
         binding?.borrowBooksFab?.setOnClickListener {
 
-            val user = userModel.getUser()
+            val user = userModel.userLiveData.value?.getOrNull()
 
             if (user != null) {
                 val datePicker =
@@ -86,6 +87,8 @@ class BookInfoFragment : Fragment() {
                 view.showSnackbar("Please log in first")
             }
         }
+
+
         super.onViewCreated(view, savedInstanceState)
     }
 

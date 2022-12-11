@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.permissionx.librarymanagementsystem.R
 import com.permissionx.librarymanagementsystem.databinding.FragmentBookBinding
 import com.permissionx.librarymanagementsystem.logic.model.BookResponse
+import com.permissionx.librarymanagementsystem.ui.user.UserModel
 import kotlinx.coroutines.launch
 
 class BookFragment : Fragment() {
@@ -24,6 +25,9 @@ class BookFragment : Fragment() {
     }
 
     private val viewModel by activityViewModels<BookViewModel>()
+
+    private val userModel by activityViewModels<UserModel>()
+
 
     private var _binding: FragmentBookBinding? = null
     private val binding get() = _binding
@@ -44,7 +48,7 @@ class BookFragment : Fragment() {
         navController = findNavController()
         //初始化图书展示列表
         viewModel.showBooks.observe(viewLifecycleOwner) {
-            val bookAdapter = BookAdapter(it, viewModel, navController!!, false)
+            val bookAdapter = BookAdapter(it, viewModel, userModel, navController!!, false)
             val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, VERTICAL)
 //            val gridLayoutManager = GridLayoutManager(newInstance().context, 4)
             val recyclerView = binding?.recyclerView

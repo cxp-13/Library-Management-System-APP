@@ -53,13 +53,13 @@ class MyBookFragment : Fragment() {
         navController = findNavController()
 //        图书列表展示
         lifecycleScope.launch() {
-            val user = userModel.getUser()
+            val user = userModel.userLiveData.value?.getOrNull()
             if (user == null) {
                 binding?.root?.showSnackbar("The user is not logged in")
             } else {
                 books.addAll(viewModel.getAllBooksById(user.id)!!)
             }
-            val bookAdapter = BookAdapter(books, viewModel, navController!!, true)
+            val bookAdapter = BookAdapter(books, viewModel, userModel, navController!!, true)
             val linearLayoutManager =
                 LinearLayoutManager(newInstance().context, LinearLayoutManager.VERTICAL, false)
             val recyclerView = binding?.recyclerView

@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ServiceCreator {
 
-    const val BASE_URL = "http://routn.nat300.top/api/public/v1"
+    const val BASE_URL = "http://routn.nat300.top/api/public/v1/"
 
     val retrofit =
         Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())

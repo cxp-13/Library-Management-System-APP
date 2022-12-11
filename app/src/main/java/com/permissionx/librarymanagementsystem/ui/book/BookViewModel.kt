@@ -13,7 +13,7 @@ class BookViewModel : ViewModel() {
     //当前选中的图书
     val bookLiveData = MutableLiveData<BookResponse.Book>()
 
-    private val queryTitle = MutableLiveData<String>()
+    private val _queryTitle = MutableLiveData<String>()
 
     //展示的全部图书
     private val _showBooks = MutableLiveData<List<BookResponse.Book>>()
@@ -25,7 +25,7 @@ class BookViewModel : ViewModel() {
     val books = ArrayList<BookResponse.Book>()
 
     val booksLiveData: LiveData<List<BookResponse.Book>> =
-        Transformations.switchMap(queryTitle) {
+        Transformations.switchMap(_queryTitle) {
             Repository.searchBook(it)
         }
 
@@ -33,7 +33,7 @@ class BookViewModel : ViewModel() {
         _showBooks.value = Repository.getAllBook()
     }
 
-    suspend fun getAllBooksById(id: Long) =
+    suspend fun getAllBooksById(id: String) =
         Repository.getAllBookById(id)
 
     suspend fun addBook(book: BookResponse.Book) = Repository.addBook(book)
@@ -43,7 +43,6 @@ class BookViewModel : ViewModel() {
     suspend fun updateBook(book: BookResponse.Book) = Repository.updateBook(book)
 
     fun searchBook(title: String) {
-        queryTitle.value = title
+        _queryTitle.value = title
     }
-
 }

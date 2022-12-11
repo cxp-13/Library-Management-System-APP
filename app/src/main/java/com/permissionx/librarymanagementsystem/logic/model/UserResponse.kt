@@ -14,7 +14,7 @@ data class UserResponse(
 
     @Entity
     data class User(
-        @PrimaryKey(autoGenerate = true) val id: Long = 0,
+        @PrimaryKey val id: String = "",
         val name: String,
         val password: String
     )

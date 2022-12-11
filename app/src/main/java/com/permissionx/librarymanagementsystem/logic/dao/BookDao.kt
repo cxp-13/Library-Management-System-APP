@@ -27,7 +27,7 @@ interface BookDao {
     suspend fun getAllBook(): List<BookResponse.Book>
 
     @Query("select * from Book where book_borrowers_id = :userId")
-    suspend fun getAllBookById(userId: Long): List<BookResponse.Book>
+    suspend fun getAllBookById(userId: String): List<BookResponse.Book>
 
 
 }

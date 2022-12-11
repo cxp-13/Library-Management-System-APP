@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.permissionx.librarymanagementsystem.R
 import com.permissionx.librarymanagementsystem.databinding.FragmentBookBinding
 import com.permissionx.librarymanagementsystem.databinding.FragmentQueryBookBinding
+import com.permissionx.librarymanagementsystem.ui.user.UserModel
 import com.permissionx.librarymanagementsystem.util.showSnackbar
 import kotlinx.coroutines.launch
 
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 class QueryBookFragment : Fragment() {
 
     private val viewModel by activityViewModels<BookViewModel>()
+    private val userModel by activityViewModels<UserModel>()
 
     private var _binding: FragmentQueryBookBinding? = null
     private val binding get() = _binding
@@ -40,7 +42,7 @@ class QueryBookFragment : Fragment() {
         val linearLayoutManager =
             LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
 
-        val bookAdapter = BookAdapter(viewModel.books, viewModel, findNavController(), false)
+        val bookAdapter = BookAdapter(viewModel.books, viewModel,userModel, findNavController(), false)
 
         binding?.recyclerView?.apply {
             layoutManager = linearLayoutManager

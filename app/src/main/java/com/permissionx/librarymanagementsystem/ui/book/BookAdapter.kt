@@ -8,14 +8,22 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.permissionx.librarymanagementsystem.R
 import com.permissionx.librarymanagementsystem.logic.model.BookResponse
+import com.permissionx.librarymanagementsystem.ui.user.UserModel
+import com.permissionx.librarymanagementsystem.util.showSnackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 
 class BookAdapter(
     val books: List<BookResponse.Book>?,
     val viewModel: BookViewModel,
+    val userModel: UserModel,
     val navController: NavController,
     val showReturnDate: Boolean
 ) :
@@ -26,6 +34,7 @@ class BookAdapter(
         val bookName = view.findViewById<TextView>(R.id.book_name)
         val bookType = view.findViewById<TextView>(R.id.book_type)
         val bookReturnDate = view.findViewById<TextView>(R.id.book_return_date)
+        val deleteBookFab = view.findViewById<ExtendedFloatingActionButton>(R.id.delete_book_fab)
 
 
     }
@@ -36,6 +45,7 @@ class BookAdapter(
         holder.itemView.setOnClickListener {
             val position = holder.bindingAdapterPosition
             val book = books?.get(position)
+//            存储选中的图书，方便后续的借阅和删除
             viewModel.bookLiveData.value = book
 //            图书详情页是否显示借阅按钮
             val bundle = bundleOf("showBorrowingBtn" to showReturnDate)
@@ -58,6 +68,21 @@ class BookAdapter(
             holder.bookReturnDate.text = simpleDateFormat.format(date)
         } else {
             holder.bookReturnDate.visibility = View.GONE
+        }
+//删除图书
+        holder.deleteBookFab.setOnClickListener {
+            val user = userModel.userLiveData.value?.getOrNull()
+            if (user != null) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    if (book != null) {
+                        viewModel.deleteBook(book)
+                    }
+                }
+                holder.bookId.showSnackbar("The deletion was successful")
+            }else{
+                holder.bookId.showSnackbar("The user is not logged in")
+            }
+
         }
     }
 

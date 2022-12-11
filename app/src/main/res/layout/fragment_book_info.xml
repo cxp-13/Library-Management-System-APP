@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:tag="book_info"
     android:layout_height="match_parent"
+    android:tag="book_info"
     tools:context=".ui.book.BookInfoFragment">
 
     <com.google.android.material.card.MaterialCardView
@@ -33,8 +33,8 @@
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:dividerInsetStart="16dp"
-                app:dividerInsetEnd="16dp"/>
+                app:dividerInsetEnd="16dp"
+                app:dividerInsetStart="16dp" />
 
             <TextView
                 android:id="@+id/book_body"
@@ -42,16 +42,19 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:lines="20" />
+
+
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/borrow_books_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             android:layout_gravity="center_horizontal|bottom"
+            android:layout_margin="16dp"
             android:text="Borrow books"
-            app:icon="@drawable/add"/>
+            app:icon="@drawable/add" />
+
 
     </com.google.android.material.card.MaterialCardView>
 

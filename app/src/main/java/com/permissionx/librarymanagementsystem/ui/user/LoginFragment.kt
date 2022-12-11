@@ -1,6 +1,7 @@
 package com.permissionx.librarymanagementsystem.ui.user
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -37,57 +38,56 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
-
-
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.loginBtn.setOnClickListener {
-            val userName = binding.loginUsername.editText?.text.toString()
-            val password = binding.loginUsername.editText?.text.toString()
-
-            lifecycleScope.launch {
-//                network
-//                userModel.login(userName, password)
-//                database
-                val user = userModel.getUserDataBase(userName)
-                if (user != null) {
-                    userModel.setUser(user)
-                    Snackbar.make(view, "Log in successfully", Snackbar.LENGTH_SHORT).show()
-                } else {
-                    Snackbar.make(
-                        view,
-                        "The user name or password is incorrect",
-                        Snackbar.LENGTH_SHORT
-                    )
-                        .show()
-                }
+//        用户登陆后的观察者
+        userModel.userLiveData.observe(viewLifecycleOwner) {
+            val user = it.getOrNull()
+            if (user is UserResponse.User) {
+                Snackbar.make(view, "Log in successfully", Snackbar.LENGTH_SHORT).show()
+            } else {
+                Snackbar.make(
+                    view,
+                    "$user",
+                    Snackbar.LENGTH_SHORT
+                )
+                    .show()
             }
         }
+//        用户注册后的观察者
+        userModel.tokenLiveData.observe(viewLifecycleOwner) {
+            val token = it.getOrNull()
+            if (token != null) {
+                Snackbar.make(
+                    view,
+                    "Registration succeeded, token is $token",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            } else {
+                val throwable = it.exceptionOrNull()
+                Snackbar.make(
+                    view,
+                    "Registration failed, The reason is ${throwable?.message}",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+        }
+//登录按钮
+        binding.loginBtn.setOnClickListener {
+            val userName = binding.loginUsername.editText?.text.toString()
+            val password = binding.loginPwd.editText?.text.toString()
+            Log.d("test", "onViewCreated: $userName $password")
+            userModel.login(userName, password)
+        }
+
+//        用户注册
         binding.registerBtn.setOnClickListener {
             val userName = binding.loginUsername.editText?.text.toString()
             val pwd = binding.loginPwd.editText?.text.toString()
-//            if (userModel.isUserSaved(userName, pwd)) {
-//                Snackbar.make(view, "The user is registered", Snackbar.LENGTH_SHORT).show()
-//            } else {
-//                userModel.saveUser(UserResponse.User(name = userName, password = pwd))
-//                binding.name.setText("")
-//                binding.pwd.setText("")
-//                Snackbar.make(view, "Registration succeeded", Snackbar.LENGTH_SHORT).show()
-//            }
-            lifecycleScope.launch {
-                val user = userModel.getUserDataBase(userName)
-                if (user != null) {
-                    Snackbar.make(view, "The user is registered", Snackbar.LENGTH_SHORT).show()
-                } else {
-                    userModel.saveUserDataBase(UserResponse.User(name = userName, password = pwd))
-                    Snackbar.make(view, "Registration succeeded", Snackbar.LENGTH_SHORT).show()
-                }
-            }
+            userModel.registered(name = userName, pwd = pwd)
         }
     }
 

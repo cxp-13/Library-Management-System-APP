@@ -14,7 +14,7 @@ interface UserService {
     fun login(@Query("name") name: String, @Query("password") password: String): Call<UserResponse>
 
     @POST("users/registered")
-    fun registered(@Body name: String, @Body password: String): Call<TokenResponse>
+    fun registered(@Body hashMap: Map<String, String>): Call<TokenResponse>
 
 
 }

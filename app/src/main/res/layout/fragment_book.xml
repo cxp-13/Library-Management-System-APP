@@ -5,17 +5,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.book.BookFragment">
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+    <!--不加上CoordinatorLayout，FloatActionButton不会显示-->
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
