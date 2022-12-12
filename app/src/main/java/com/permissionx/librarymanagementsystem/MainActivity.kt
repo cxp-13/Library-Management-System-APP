@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                 userModel.userLiveData.observe(drawerView.findViewTreeLifecycleOwner()!!){
                     val user = it.getOrNull()
                     username!!.text = user?.name
-                    userId!!.text = user?.id
+                    userId!!.text = user?.id.toString()
 
                 }
 

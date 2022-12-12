@@ -77,7 +77,7 @@ class BookInfoFragment : Fragment() {
                     val book = viewModel.bookLiveData.value
                     if (book != null) {
                         book.returnDate = it
-                        book.bookBorrowersId = user.id
+                        book.bookBorrowersId = user.id.toString()
                     }
                     lifecycleScope.launch() {
                         viewModel.updateBook(book!!)

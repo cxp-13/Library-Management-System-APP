@@ -48,9 +48,18 @@
             android:id="@+id/delete_book_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
+            android:layout_gravity="center"
             android:layout_margin="16dp"
             android:text="Delete books"
             app:icon="@drawable/deletebook" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/update_book_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:text="Update books"
+            app:icon="@drawable/updatebook" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

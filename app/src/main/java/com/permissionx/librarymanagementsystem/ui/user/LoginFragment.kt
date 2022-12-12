@@ -29,10 +29,6 @@ class LoginFragment : Fragment() {
 
     private val userModel by activityViewModels<UserModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -80,7 +76,8 @@ class LoginFragment : Fragment() {
             val userName = binding.loginUsername.editText?.text.toString()
             val password = binding.loginPwd.editText?.text.toString()
             Log.d("test", "onViewCreated: $userName $password")
-            userModel.login(userName, password)
+
+//            userModel.login(userName, password)
         }
 
 //        用户注册

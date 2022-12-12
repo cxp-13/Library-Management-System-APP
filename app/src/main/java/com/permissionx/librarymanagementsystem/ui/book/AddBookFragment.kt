@@ -1,6 +1,7 @@
 package com.permissionx.librarymanagementsystem.ui.book
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,13 +41,13 @@ class AddBookFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(BookViewModel::class.java)
+        viewModel = ViewModelProvider(this)[BookViewModel::class.java]
 
-//菜单项
+//图书的类别
         val types = arrayOf(
             "technology", "life", "finance", "Children", "Literary"
         )
-        val adapter = ArrayAdapter<String>(
+        val adapter = ArrayAdapter(
             this.requireContext(),
             android.R.layout.simple_dropdown_item_1line,
             types
@@ -54,6 +55,14 @@ class AddBookFragment : Fragment() {
         val typeEditText = binding?.type?.editText as MaterialAutoCompleteTextView
         typeEditText.setAdapter(adapter)
 
+
+//        判断是否是更新图书
+        var title = arguments?.get("title")
+        var body = arguments?.get("body")
+        if (title != null) {
+            binding!!.title.editText?.setText(title.toString())
+            binding!!.body.editText?.setText(body.toString())
+        }
 //        提交图书
         binding!!.addBookBtn.setOnClickListener {
             val title = binding?.title?.editText?.text.toString()
@@ -82,8 +91,6 @@ class AddBookFragment : Fragment() {
                 val navController = findNavController()
                 navController.navigate(R.id.action_addBookFragment_to_bookFragment)
             }
-
-
         }
     }
 

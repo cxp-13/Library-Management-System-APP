@@ -19,13 +19,15 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
+import kotlin.concurrent.timerTask
 
 class BookAdapter(
     val books: List<BookResponse.Book>?,
     val viewModel: BookViewModel,
     val userModel: UserModel,
     val navController: NavController,
-    val showReturnDate: Boolean
+    val showReturnDate: Boolean,
+    val showBtn: Boolean = true
 ) :
     RecyclerView.Adapter<BookAdapter.ViewHolder>() {
 
@@ -35,13 +37,17 @@ class BookAdapter(
         val bookType = view.findViewById<TextView>(R.id.book_type)
         val bookReturnDate = view.findViewById<TextView>(R.id.book_return_date)
         val deleteBookFab = view.findViewById<ExtendedFloatingActionButton>(R.id.delete_book_fab)
-
-
+        val updateBookFab = view.findViewById<ExtendedFloatingActionButton>(R.id.update_book_fab)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflate = LayoutInflater.from(parent.context).inflate(R.layout.book_item, parent, false)
         val holder = ViewHolder(inflate)
+//        搜索界面不显示
+        if (!showBtn) {
+            holder.deleteBookFab.visibility = View.GONE
+            holder.updateBookFab.visibility = View.GONE
+        }
         holder.itemView.setOnClickListener {
             val position = holder.bindingAdapterPosition
             val book = books?.get(position)
@@ -49,10 +55,7 @@ class BookAdapter(
             viewModel.bookLiveData.value = book
 //            图书详情页是否显示借阅按钮
             val bundle = bundleOf("showBorrowingBtn" to showReturnDate)
-
             navController.navigate(R.id.bookInfoFragment, bundle)
-
-
         }
         return holder
     }
@@ -79,10 +82,21 @@ class BookAdapter(
                     }
                 }
                 holder.bookId.showSnackbar("The deletion was successful")
-            }else{
+            } else {
                 holder.bookId.showSnackbar("The user is not logged in")
             }
-
+        }
+        //更新图书
+        holder.updateBookFab.setOnClickListener {
+            val user = userModel.userLiveData.value?.getOrNull()
+            if (true || user != null) {
+                navController.navigate(
+                    R.id.action_bookFragment_to_addBookFragment,
+                    bundleOf("title" to book?.title, "body" to book?.body)
+                )
+            } else {
+                holder.bookId.showSnackbar("The user is not logged in")
+            }
         }
     }
 

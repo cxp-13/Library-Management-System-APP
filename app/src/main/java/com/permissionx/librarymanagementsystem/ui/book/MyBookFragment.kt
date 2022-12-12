@@ -57,7 +57,7 @@ class MyBookFragment : Fragment() {
             if (user == null) {
                 binding?.root?.showSnackbar("The user is not logged in")
             } else {
-                books.addAll(viewModel.getAllBooksById(user.id)!!)
+                books.addAll(viewModel.getAllBooksById(user.id.toString())!!)
             }
             val bookAdapter = BookAdapter(books, viewModel, userModel, navController!!, true)
             val linearLayoutManager =

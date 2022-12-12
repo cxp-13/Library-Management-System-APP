@@ -27,11 +27,6 @@ class QueryBookFragment : Fragment() {
     private val binding get() = _binding
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,7 +37,14 @@ class QueryBookFragment : Fragment() {
         val linearLayoutManager =
             LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
 
-        val bookAdapter = BookAdapter(viewModel.books, viewModel,userModel, findNavController(), false)
+        val bookAdapter = BookAdapter(
+            viewModel.books,
+            viewModel,
+            userModel,
+            findNavController(),
+            showReturnDate = false,
+            showBtn = false
+        )
 
         binding?.recyclerView?.apply {
             layoutManager = linearLayoutManager
