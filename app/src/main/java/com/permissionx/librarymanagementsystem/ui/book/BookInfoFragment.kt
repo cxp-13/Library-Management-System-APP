@@ -9,13 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.permissionx.librarymanagementsystem.R
-import com.permissionx.librarymanagementsystem.databinding.FragmentBookBinding
 import com.permissionx.librarymanagementsystem.databinding.FragmentBookInfoBinding
-import com.permissionx.librarymanagementsystem.logic.model.UserResponse
 import com.permissionx.librarymanagementsystem.ui.user.UserModel
 import com.permissionx.librarymanagementsystem.util.showSnackbar
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class BookInfoFragment : Fragment() {
 
@@ -34,32 +32,23 @@ class BookInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentBookInfoBinding.inflate(inflater, container, false)
-
-
         return binding?.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        val book = viewModel.bookLiveData.value
-        if (book != null) {
-            binding?.bookBody!!.text = book.body
-            binding?.bookTitle!!.text = book.title
-        }
-
-
+//获取要展示图书标题和内容
+        val book = viewModel.bookInfo.value?.getOrNull()
+        binding?.bookBody!!.text = book?.body
+        binding?.bookTitle!!.text = book?.title
+//通过个人图书列表进来的，不显示借阅
         val isShowBorrowingBtn = arguments?.get("showBorrowingBtn") as Boolean
-
         if (isShowBorrowingBtn) {
             binding?.borrowBooksFab?.visibility = View.GONE
         }
-
 //图书借阅按钮
         binding?.borrowBooksFab?.setOnClickListener {
-
             val user = userModel.userLiveData.value?.getOrNull()
-
             if (user != null) {
                 val datePicker =
                     MaterialDatePicker.Builder.datePicker()
@@ -70,25 +59,22 @@ class BookInfoFragment : Fragment() {
                 if (supportFragmentManager != null) {
                     datePicker.show(supportFragmentManager, "book_info")
                 }
-
                 datePicker.addOnPositiveButtonClickListener {
                     // Respond to positive button click.
                     Log.d("test", "onViewCreated: $it")
-                    val book = viewModel.bookLiveData.value
-                    if (book != null) {
-                        book.returnDate = it
-                        book.bookBorrowersId = user.id.toString()
-                    }
-                    lifecycleScope.launch() {
-                        viewModel.updateBook(book!!)
+                    val user = userModel.userLiveData.value?.getOrNull()
+                    lifecycleScope.launch {
+                        val result = viewModel.borrowBook(
+                            book!!.title, user!!.id,
+                            System.currentTimeMillis().toString()
+                        )
+                        view.showSnackbar("$result")
                     }
                 }
             } else {
                 view.showSnackbar("Please log in first")
             }
         }
-
-
         super.onViewCreated(view, savedInstanceState)
     }
 

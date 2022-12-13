@@ -1,7 +1,6 @@
 package com.permissionx.librarymanagementsystem.ui.book
 
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,11 +18,6 @@ import com.permissionx.librarymanagementsystem.util.showSnackbar
 import kotlinx.coroutines.launch
 
 class AddBookFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = AddBookFragment()
-    }
-
     private lateinit var viewModel: BookViewModel
 
     private var _binding: FragmentAddBookBinding? = null
@@ -63,33 +57,45 @@ class AddBookFragment : Fragment() {
             binding!!.title.editText?.setText(title.toString())
             binding!!.body.editText?.setText(body.toString())
         }
-//        提交图书
-        binding!!.addBookBtn.setOnClickListener {
-            val title = binding?.title?.editText?.text.toString()
+//        确认更新或者提交图书
+        binding!!.confirmBtn.setOnClickListener {
+            val newTitle = binding?.title?.editText?.text.toString()
             val count = binding?.count?.editText?.text.toString()
             val location = binding?.location?.editText?.text.toString()
             val body = binding?.body?.editText?.text.toString()
-            var type: String = "default"
-
+            var type = "default"
+//获取图书类别菜单的选定项
             binding!!.typeTextView.setOnItemClickListener { parent, view, position, id ->
                 val textView = view as TextView
                 type = textView.text as String
             }
             lifecycleScope.launch {
-                viewModel.addBook(
-                    BookResponse.Book(
-                        title = title,
-                        count = count.toLong(),
-                        bookshelfLocation = location,
-                        body = body,
-                        category = type
-                    )
-                )
-            }
+                val result = if (title != null) {
+                    viewModel.updateBook(
+                        BookResponse.Book(
+                            title = "$newTitle&$title",
+                            count = count.toLong(),
+                            bookshelfLocation = location,
+                            body = body,
+                            category = type
+                        )
+                    ).getOrNull()
+                } else {
+                    viewModel.addBook(
+                        BookResponse.Book(
+                            title = newTitle,
+                            count = count.toLong(),
+                            bookshelfLocation = location,
+                            body = body,
+                            category = type
+                        )
+                    ).getOrNull()
+                }
+                view?.showSnackbar("$result", "examine") {
+                    val navController = findNavController()
+                    navController.navigate(R.id.action_addBookFragment_to_bookFragment)
 
-            binding!!.addBookBtn.showSnackbar("The book is added successfully", "examine") {
-                val navController = findNavController()
-                navController.navigate(R.id.action_addBookFragment_to_bookFragment)
+                }
             }
         }
     }

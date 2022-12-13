@@ -89,13 +89,13 @@
 
 
     <Button
-        android:id="@+id/addBookBtn"
+        android:id="@+id/confirmBtn"
         style="@style/Widget.Material3.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Confirm the addition"
-        app:icon="@drawable/add" />
+        android:text="Confirm"
+        app:icon="@drawable/certain" />
 
 
 </LinearLayout>

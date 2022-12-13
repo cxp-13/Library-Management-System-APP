@@ -77,7 +77,7 @@ class LoginFragment : Fragment() {
             val password = binding.loginPwd.editText?.text.toString()
             Log.d("test", "onViewCreated: $userName $password")
 
-//            userModel.login(userName, password)
+            userModel.login(userName, password)
         }
 
 //        用户注册

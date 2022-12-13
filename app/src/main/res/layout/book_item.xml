@@ -44,6 +44,21 @@
             android:inputType="date"
             android:textSize="15sp"></TextView>
 
+        <TextView
+            android:id="@+id/book_count"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:inputType="number"
+            android:textSize="15sp"></TextView>
+
+        <TextView
+            android:id="@+id/book_location"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:textSize="15sp"></TextView>
+
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/delete_book_fab"
             android:layout_width="wrap_content"
@@ -51,7 +66,7 @@
             android:layout_gravity="center"
             android:layout_margin="16dp"
             android:text="Delete books"
-            app:icon="@drawable/deletebook" />
+            app:icon="@drawable/delete" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/update_book_fab"
@@ -60,6 +75,6 @@
             android:layout_gravity="center"
             android:layout_margin="16dp"
             android:text="Update books"
-            app:icon="@drawable/updatebook" />
+            app:icon="@drawable/update" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

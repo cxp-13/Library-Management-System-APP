@@ -2,7 +2,6 @@ package com.permissionx.librarymanagementsystem.logic.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
-import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -13,6 +12,9 @@ import com.permissionx.librarymanagementsystem.logic.model.BookResponse
 interface BookDao {
     @Query("select * from Book where title like '%' || :title || '%'")
     suspend fun searchBook(title: String): List<BookResponse.Book>
+
+    @Query("select * from Book where id = :id")
+    suspend fun getBook(id: String): BookResponse.Book
 
     @Insert
     suspend fun addBook(book: BookResponse.Book)

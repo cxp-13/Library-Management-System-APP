@@ -24,46 +24,35 @@ import kotlinx.coroutines.launch
 
 
 class MyBookFragment : Fragment() {
-
-
-    companion object {
-        fun newInstance() = BookFragment()
-    }
-
     private val viewModel by activityViewModels<BookViewModel>()
     private val userModel by activityViewModels<UserModel>()
     private var _binding: FragmentMyBookBinding? = null
     private val binding get() = _binding
-    var navController: NavController? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMyBookBinding.inflate(inflater, container, false)
-
-
         return binding?.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-//        viewModel = ViewModelProvider(this)[BookViewModel::class.java]
-        var books = ArrayList<BookResponse.Book>()
-        navController = findNavController()
+        val linearLayoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        val recyclerView = binding?.recyclerView
+        recyclerView?.layoutManager = linearLayoutManager
 //        图书列表展示
-        lifecycleScope.launch() {
-            val user = userModel.userLiveData.value?.getOrNull()
-            if (user == null) {
-                binding?.root?.showSnackbar("The user is not logged in")
-            } else {
-                books.addAll(viewModel.getAllBooksById(user.id.toString())!!)
-            }
-            val bookAdapter = BookAdapter(books, viewModel, userModel, navController!!, true)
-            val linearLayoutManager =
-                LinearLayoutManager(newInstance().context, LinearLayoutManager.VERTICAL, false)
-            val recyclerView = binding?.recyclerView
-            recyclerView?.layoutManager = linearLayoutManager
+        val user = userModel.userLiveData.value?.getOrNull()
+        if (user == null) {
+            binding?.root?.showSnackbar("The user is not logged in")
+        } else {
+            viewModel.searchUserBook(user.id)
+        }
+        viewModel.showMyBooks.observe(viewLifecycleOwner) {
+            val books = it.getOrNull()
+            val bookAdapter = BookAdapter(books, viewModel, userModel, findNavController(), true)
             recyclerView?.adapter = bookAdapter
         }
     }
@@ -72,6 +61,4 @@ class MyBookFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }

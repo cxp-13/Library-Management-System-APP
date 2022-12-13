@@ -1,6 +1,5 @@
 package com.permissionx.librarymanagementsystem.ui.book
 
-import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,18 +14,16 @@ import com.permissionx.librarymanagementsystem.ui.user.UserModel
 import com.permissionx.librarymanagementsystem.util.showSnackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.Date
-import kotlin.concurrent.timerTask
+import java.util.*
 
 class BookAdapter(
     val books: List<BookResponse.Book>?,
     val viewModel: BookViewModel,
     val userModel: UserModel,
     val navController: NavController,
-    val showReturnDate: Boolean,
+    val showReturnTime: Boolean,
     val showBtn: Boolean = true
 ) :
     RecyclerView.Adapter<BookAdapter.ViewHolder>() {
@@ -36,6 +33,9 @@ class BookAdapter(
         val bookName = view.findViewById<TextView>(R.id.book_name)
         val bookType = view.findViewById<TextView>(R.id.book_type)
         val bookReturnDate = view.findViewById<TextView>(R.id.book_return_date)
+        val bookCount = view.findViewById<TextView>(R.id.book_count)
+        val bookLocation = view.findViewById<TextView>(R.id.book_location)
+
         val deleteBookFab = view.findViewById<ExtendedFloatingActionButton>(R.id.delete_book_fab)
         val updateBookFab = view.findViewById<ExtendedFloatingActionButton>(R.id.update_book_fab)
     }
@@ -48,13 +48,14 @@ class BookAdapter(
             holder.deleteBookFab.visibility = View.GONE
             holder.updateBookFab.visibility = View.GONE
         }
+//        当点击某个图书项时
         holder.itemView.setOnClickListener {
             val position = holder.bindingAdapterPosition
             val book = books?.get(position)
-//            存储选中的图书，方便后续的借阅和删除
-            viewModel.bookLiveData.value = book
+//            存储选中的图书，方便后续的借阅
+            viewModel.searchBookInfo(book!!.title)
 //            图书详情页是否显示借阅按钮
-            val bundle = bundleOf("showBorrowingBtn" to showReturnDate)
+            val bundle = bundleOf("showBorrowingBtn" to showReturnTime)
             navController.navigate(R.id.bookInfoFragment, bundle)
         }
         return holder
@@ -65,9 +66,12 @@ class BookAdapter(
         holder.bookId.text = book?.id.toString()
         holder.bookName.text = book?.title
         holder.bookType.text = book?.category
-        if (showReturnDate) {
-            val date = Date(book!!.returnDate)
-            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
+        holder.bookCount.text = book?.count.toString()
+        holder.bookLocation.text = book?.bookshelfLocation
+//        是否展示图书归还日期
+        if (showReturnTime) {
+            val date = Date(book!!.returnTime)
+            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
             holder.bookReturnDate.text = simpleDateFormat.format(date)
         } else {
             holder.bookReturnDate.visibility = View.GONE
@@ -77,11 +81,9 @@ class BookAdapter(
             val user = userModel.userLiveData.value?.getOrNull()
             if (user != null) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    if (book != null) {
-                        viewModel.deleteBook(book)
-                    }
+                    val result = viewModel.deleteBook(book!!.title).getOrNull()
+                    holder.itemView.showSnackbar("$result")
                 }
-                holder.bookId.showSnackbar("The deletion was successful")
             } else {
                 holder.bookId.showSnackbar("The user is not logged in")
             }
@@ -89,7 +91,7 @@ class BookAdapter(
         //更新图书
         holder.updateBookFab.setOnClickListener {
             val user = userModel.userLiveData.value?.getOrNull()
-            if (true || user != null) {
+            if (user != null) {
                 navController.navigate(
                     R.id.action_bookFragment_to_addBookFragment,
                     bundleOf("title" to book?.title, "body" to book?.body)

@@ -26,7 +26,6 @@ class UserModel : ViewModel() {
     //注册的用户token
     val tokenLiveData = Transformations.switchMap(_newUser) {
         Repository.registered(mapOf("name" to it.name, "password" to it.password))
-
     }
 //网络请求
     fun login(name: String, pwd: String) {
@@ -45,9 +44,9 @@ class UserModel : ViewModel() {
 
     fun isUserSaved(name: String, pwd: String) = Repository.isUserSaved(name, pwd)
 //数据库
-    suspend fun getUserDataBase(name: String): UserResponse.User? = Repository.getUserDataBase(name)
+     fun getUserDataBase(name: String): UserResponse.User? = Repository.getUserDataBase(name)
 
-    suspend fun saveUserDataBase(user: UserResponse.User) {
+     fun saveUserDataBase(user: UserResponse.User) {
         Repository.saveUserDataBase(user)
     }
 }

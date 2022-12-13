@@ -48,28 +48,26 @@ class BookFragment : Fragment() {
         navController = findNavController()
         //初始化图书展示列表
         viewModel.showBooks.observe(viewLifecycleOwner) {
-            val bookAdapter = BookAdapter(it, viewModel, userModel, navController!!, false)
+            val bookAdapter =
+                BookAdapter(it.getOrNull(), viewModel, userModel, navController!!, false)
             val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, VERTICAL)
-//            val gridLayoutManager = GridLayoutManager(newInstance().context, 4)
             val recyclerView = binding?.recyclerView
             recyclerView?.layoutManager = staggeredGridLayoutManager
             recyclerView?.adapter = bookAdapter
         }
 
-        //        添加图书悬浮按钮
+        // 添加图书悬浮按钮
         binding?.fab?.setOnClickListener {
             navController!!.navigate(R.id.action_bookFragment_to_addBookFragment)
         }
         binding?.swipeRefresh?.setOnRefreshListener {
-//        图书列表展示
+        //图书列表展示
             refreshBooks()
         }
     }
 
     private fun refreshBooks() {
-        lifecycleScope.launch {
-            viewModel.getAllBooks()
-        }
+        viewModel.refreshBooks()
         binding?.swipeRefresh?.isRefreshing = false
     }
 

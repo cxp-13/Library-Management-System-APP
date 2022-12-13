@@ -7,15 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.permissionx.librarymanagementsystem.R
-import com.permissionx.librarymanagementsystem.databinding.FragmentBookBinding
 import com.permissionx.librarymanagementsystem.databinding.FragmentQueryBookBinding
 import com.permissionx.librarymanagementsystem.ui.user.UserModel
 import com.permissionx.librarymanagementsystem.util.showSnackbar
-import kotlinx.coroutines.launch
 
 
 class QueryBookFragment : Fragment() {
@@ -35,14 +31,14 @@ class QueryBookFragment : Fragment() {
 
 
         val linearLayoutManager =
-            LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         val bookAdapter = BookAdapter(
             viewModel.books,
             viewModel,
             userModel,
             findNavController(),
-            showReturnDate = false,
+            showReturnTime = false,
             showBtn = false
         )
 
@@ -54,18 +50,19 @@ class QueryBookFragment : Fragment() {
         binding?.search?.editText?.addTextChangedListener {
             val queryText = it.toString()
             if (queryText.isNotEmpty()) {
-                viewModel.searchBook(it.toString())
+                viewModel.searchBook(queryText)
             } else {
                 viewModel.books.clear()
                 bookAdapter.notifyDataSetChanged()
             }
         }
-//        观察者
-        viewModel.booksLiveData.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
+//观察查询图书列表
+        viewModel.queryBooks.observe(viewLifecycleOwner) {
+            val books = it.getOrNull()
+            if (books!!.isNotEmpty()) {
                 viewModel.books.apply {
                     clear()
-                    addAll(it)
+                    addAll(books)
                 }
                 bookAdapter.notifyDataSetChanged()
             } else {
