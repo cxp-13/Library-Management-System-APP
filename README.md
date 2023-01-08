@@ -1,4 +1,4 @@
-# LibraryManagementSystem-SUST
+# 图书馆书籍管理系统设计android端
 
 #### 介绍
 1.实现用户系统登录、验证、超时归还提醒等功能；
