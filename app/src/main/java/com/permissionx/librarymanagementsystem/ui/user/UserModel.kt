@@ -6,47 +6,59 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.permissionx.librarymanagementsystem.logic.Repository
-import com.permissionx.librarymanagementsystem.logic.dao.UserSPDao
 import com.permissionx.librarymanagementsystem.logic.model.TokenResponse
-import com.permissionx.librarymanagementsystem.logic.model.UserResponse
+import com.permissionx.librarymanagementsystem.logic.model.User
 
 class UserModel : ViewModel() {
 
-    private var _user = MutableLiveData<UserResponse.User>()
+    private var _user = MutableLiveData<User>()
 
-    private var _newUser = MutableLiveData<UserResponse.User>()
+    val userLiveData: LiveData<User>
+        get() = _user
+
+    private var _newUser = MutableLiveData<User>()
 
     var supportFragmentManager: FragmentManager? = null
 
-    //抽屉的用户界面展示
-    val userLiveData = Transformations.switchMap(_user) {
-        Repository.login(it.name, it.password)
+    //获取token和id
+
+    val loginDataLiveData: LiveData<Result<TokenResponse.Data>> = Transformations.switchMap(_user) {
+       Repository.login(mapOf("username" to it.username, "password" to it.password))
     }
 
-    //注册的用户token
-    val tokenLiveData = Transformations.switchMap(_newUser) {
-        Repository.registered(mapOf("name" to it.name, "password" to it.password))
-    }
-//网络请求
-    fun login(name: String, pwd: String) {
-        _user.value = UserResponse.User(name = name, password = pwd)
+    //   获取是否注册成功的信息
+    val registeredStatusLiveData = Transformations.switchMap(_newUser) {
+        Repository.registered(mapOf("username" to it.username, "password" to it.password))
     }
 
-    fun registered(name: String, pwd: String) {
-        _newUser.value = UserResponse.User(name = name, password = pwd)
+    fun setUserId(userId: String) {
+        _user.value = _user.value?.copy(id = userId)
     }
-//share preference
-    fun saveUser(user: UserResponse.User) {
+
+    //网络请求
+    fun login(username: String, password: String) {
+        _user.value = User(username = username, password = password)
+
+
+        Repository.login(mapOf("username" to username, "password" to password)).value
+    }
+
+    fun registered(username: String, password: String) {
+        _newUser.value = User(username = username, password = password)
+    }
+
+    //share preference
+    fun saveUser(user: User) {
         Repository.saveUser(user)
     }
 
-    fun getUser(name: String): UserResponse.User = Repository.getUser(name)
+    fun getUser(name: String): User = Repository.getUser(name)
 
     fun isUserSaved(name: String, pwd: String) = Repository.isUserSaved(name, pwd)
 //数据库
-     fun getUserDataBase(name: String): UserResponse.User? = Repository.getUserDataBase(name)
-
-     fun saveUserDataBase(user: UserResponse.User) {
-        Repository.saveUserDataBase(user)
-    }
+//     fun getUserDataBase(username: String): UserResponse.User? = Repository.getUserDataBase(username)
+//
+//     fun saveUserDataBase(user: UserResponse.User) {
+//        Repository.saveUserDataBase(user)
+//    }
 }

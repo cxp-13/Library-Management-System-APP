@@ -1,7 +1,6 @@
 package com.permissionx.librarymanagementsystem.logic.network
 
-import com.permissionx.librarymanagementsystem.logic.model.BookInfoResponse
-import com.permissionx.librarymanagementsystem.logic.model.BookResponse
+import com.permissionx.librarymanagementsystem.logic.model.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -13,20 +12,20 @@ interface BookService {
     @POST("book/publish")
     fun addBook(
         @Header("Authorization") token: String,
-        @Body book: BookResponse.Book
-    ): Call<BookResponse.Meta>
+        @Body book: Book
+    ): Call<Meta>
 
     @GET("book/delete")
     fun deleteBook(
         @Header("Authorization") token: String,
-        @Query("title") title: String
-    ): Call<BookResponse.Meta>
+        @Query("id") id: String
+    ): Call<Meta>
 
     @POST("book/update")
     fun updateBook(
         @Header("Authorization") token: String,
-        @Body book: BookResponse.Book
-    ): Call<BookResponse.Meta>
+        @Body book: Book
+    ): Call<Meta>
 
     @GET("book/read")
     fun searchBook(
@@ -37,18 +36,18 @@ interface BookService {
     @GET("book/info")
     fun searchBookInfo(
         @Header("Authorization") token: String,
-        @Query("title") title: String
+        @Query("id") id: String
     ): Call<BookInfoResponse>
 
-    @GET("user/borrow")
+    @GET("users/borrow")
     fun borrowBook(
         @Header("Authorization") token: String,
-        @Query("title") title: String,
+        @Query("book_id") bookId: String,
         @Query("user_id") userId: String,
-        @Query("return_time") returnTime: String
-    ): Call<BookResponse.Meta>
+        @Query("return_date") returnDate: String
+    ): Call<MetaResponse>
 
-    @GET("book/user")
+    @GET("book/userborrow")
     fun searchUserBook(
         @Header("Authorization") token: String,
         @Query("user_id") userId: String

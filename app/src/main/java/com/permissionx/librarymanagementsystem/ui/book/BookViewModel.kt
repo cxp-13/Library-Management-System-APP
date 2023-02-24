@@ -4,53 +4,49 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.permissionx.librarymanagementsystem.LibraryManagementSystemApplication
 import com.permissionx.librarymanagementsystem.logic.Repository
-import com.permissionx.librarymanagementsystem.logic.model.BookResponse
+import com.permissionx.librarymanagementsystem.logic.model.Book
 
 class BookViewModel : ViewModel() {
 
 
-    //    用户token
-    private var token: String? = null
 
-    fun setToken(token: String) {
-        this.token = token
-    }
+
+
 
     //图书详情
-    private val _bookTitle = MutableLiveData<String>()
+    private val _bookId = MutableLiveData<String>()
 
-    val bookInfo = Transformations.switchMap(_bookTitle) {
-        Repository.searchBookInfo(this.token!!, it)
+    val bookInfo = Transformations.switchMap(_bookId) {
+        Repository.searchBookInfo(LibraryManagementSystemApplication.token, it)
     }
 
     //展示的全部图书
-
-
     private val _all = MutableLiveData<String>()
 
     private val _showBooks = Transformations.switchMap(_all) {
-        Repository.searchBook(this.token!!, it)
+        Repository.searchBook(LibraryManagementSystemApplication.token, it)
     }
 
-    val showBooks: LiveData<Result<List<BookResponse.Book>>>
+    val showBooks: LiveData<Result<List<Book>>>
         get() = _showBooks
 
     //展示的个人借阅的全部图书
     private val _userId = MutableLiveData<String>()
 
     val showMyBooks = Transformations.switchMap(_userId) {
-        Repository.searchUserBook(this.token!!, it)
+        Repository.searchUserBook(LibraryManagementSystemApplication.token, it)
     }
 
     //搜索的图书
     private val _queryTitle = MutableLiveData<String>()
 
-    val books = ArrayList<BookResponse.Book>()
+    val books = ArrayList<Book>()
 
-    val queryBooks: LiveData<Result<List<BookResponse.Book>>> =
+    val queryBooks: LiveData<Result<List<Book>>> =
         Transformations.switchMap(_queryTitle) {
-            Repository.searchBook(this.token!!, it)
+            Repository.searchBook(LibraryManagementSystemApplication.token, it)
         }
 
 
@@ -70,16 +66,16 @@ class BookViewModel : ViewModel() {
     }
 
     suspend fun addBook(
-        book: BookResponse.Book
-    ) = Repository.addBook(this.token!!, book)
+        book: Book
+    ) = Repository.addBook(LibraryManagementSystemApplication.token, book)
 
     suspend fun deleteBook(
-        title: String
-    ) = Repository.deleteBook(this.token!!, title)
+        id: String
+    ) = Repository.deleteBook(LibraryManagementSystemApplication.token, id)
 
     suspend fun updateBook(
-        book: BookResponse.Book
-    ) = Repository.updateBook(this.token!!, book)
+        book: Book
+    ) = Repository.updateBook(LibraryManagementSystemApplication.token, book)
 
     fun searchBook(
         title: String
@@ -88,9 +84,9 @@ class BookViewModel : ViewModel() {
     }
 
     fun searchBookInfo(
-        title: String
+        id: String
     ) {
-        _bookTitle.value = title
+        _bookId.value = id
     }
 
     fun searchUserBook(
@@ -100,8 +96,8 @@ class BookViewModel : ViewModel() {
     }
 
     suspend fun borrowBook(
-        title: String,
+        bookId: String,
         userId: String,
-        returnTime: String
-    ) = Repository.borrowBook(this.token!!, title, userId, returnTime)
+        returnDate: String
+    ) = Repository.borrowBook(LibraryManagementSystemApplication.token, bookId, userId, returnDate)
 }

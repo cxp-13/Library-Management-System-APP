@@ -7,27 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.permissionx.librarymanagementsystem.R
+import com.permissionx.librarymanagementsystem.LibraryManagementSystemApplication
 import com.permissionx.librarymanagementsystem.databinding.FragmentLoginBinding
-import com.permissionx.librarymanagementsystem.logic.model.UserResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import java.time.Duration
+import com.permissionx.librarymanagementsystem.logic.model.TokenResponse
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private val userModel by activityViewModels<UserModel>()
+    private val userViewModel by activityViewModels<UserModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,33 +30,44 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        用户登陆后的观察者
-        userModel.userLiveData.observe(viewLifecycleOwner) {
-            val user = it.getOrNull()
-            if (user is UserResponse.User) {
-                Snackbar.make(view, "Log in successfully", Snackbar.LENGTH_SHORT).show()
-            } else {
+        userViewModel.loginDataLiveData.observe(viewLifecycleOwner) {
+            if (it.isSuccess) {
+                val loginData = it.getOrNull() as TokenResponse.Data
+//                bookViewModel.setToken(token)
+//token做全局变量
+                LibraryManagementSystemApplication.token = loginData.token
+                // 给用户的id赋值
+                if (userViewModel.userLiveData.value!!.id == "") {
+                    userViewModel.setUserId(loginData.id)
+                }
                 Snackbar.make(
                     view,
-                    "$user",
-                    Snackbar.LENGTH_SHORT
-                )
-                    .show()
-            }
-        }
-//        用户注册后的观察者
-        userModel.tokenLiveData.observe(viewLifecycleOwner) {
-            val token = it.getOrNull()
-            if (token != null) {
-                Snackbar.make(
-                    view,
-                    "Registration succeeded, token is $token",
+                    "token is ${loginData.token} id:${loginData.id}",
                     Snackbar.LENGTH_SHORT
                 ).show()
             } else {
-                val throwable = it.exceptionOrNull()
+                val exception = it.exceptionOrNull()
                 Snackbar.make(
                     view,
-                    "Registration failed, The reason is ${throwable?.message}",
+                    "${exception?.message}",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+        }
+//        用户注册后的观察者
+        userViewModel.registeredStatusLiveData.observe(viewLifecycleOwner) {
+            if (it.isSuccess) {
+                val message = it.getOrNull()
+                Snackbar.make(
+                    view,
+                    "$message",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            } else {
+                val exception = it.exceptionOrNull()
+                Snackbar.make(
+                    view,
+                    "${exception?.message}",
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
@@ -76,15 +77,13 @@ class LoginFragment : Fragment() {
             val userName = binding.loginUsername.editText?.text.toString()
             val password = binding.loginPwd.editText?.text.toString()
             Log.d("test", "onViewCreated: $userName $password")
-
-            userModel.login(userName, password)
+            userViewModel.login(userName, password)
         }
-
 //        用户注册
         binding.registerBtn.setOnClickListener {
             val userName = binding.loginUsername.editText?.text.toString()
             val pwd = binding.loginPwd.editText?.text.toString()
-            userModel.registered(name = userName, pwd = pwd)
+            userViewModel.registered(userName, pwd)
         }
     }
 

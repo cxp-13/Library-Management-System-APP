@@ -6,19 +6,19 @@ import androidx.core.content.edit
 
 import com.google.gson.Gson
 import com.permissionx.librarymanagementsystem.LibraryManagementSystemApplication
-import com.permissionx.librarymanagementsystem.logic.model.UserResponse
+import com.permissionx.librarymanagementsystem.logic.model.User
 
 object UserSPDao {
 
     // TODO: 用户登录的逻辑和函数的参数存在问题 
-    fun getUser(name:String): UserResponse.User {
+    fun getUser(name:String): User {
         val user = sharePreference().getString(name, "")
-        return Gson().fromJson(user, UserResponse.User::class.java)
+        return Gson().fromJson(user, User::class.java)
     }
 
-    fun saveUser(user: UserResponse.User) {
+    fun saveUser(user: User) {
         sharePreference().edit {
-            putString(user.name, Gson().toJson(user))
+            putString(user.username, Gson().toJson(user))
         }
     }
 

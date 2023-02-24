@@ -1,7 +1,8 @@
 package com.permissionx.librarymanagementsystem.logic.network
 
 import android.util.Log
-import com.permissionx.librarymanagementsystem.logic.model.BookResponse
+import com.permissionx.librarymanagementsystem.logic.model.Book
+import com.permissionx.librarymanagementsystem.logic.model.TokenResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,24 +18,24 @@ object LibraryManagementSystemNetwork {
     val bookService = ServiceCreator.create<BookService>()
 
 
-    suspend fun login(name: String, pwd: String) = userService.login(name, pwd).await()
+    suspend fun login(hashMap: Map<String, String>): TokenResponse = userService.login(hashMap).await()
 
     suspend fun registered(hashMap: Map<String, String>) =
         userService.registered(hashMap).await()
 
     suspend fun addBook(
         token: String,
-        book: BookResponse.Book
+        book: Book
     ) = bookService.addBook(token, book).await()
 
     suspend fun deleteBook(
         token: String,
-        title: String
-    ) = bookService.deleteBook(token, title).await()
+        id: String
+    ) = bookService.deleteBook(token, id).await()
 
     suspend fun updateBook(
         token: String,
-        book: BookResponse.Book
+        book: Book
     ) = bookService.updateBook(token,book).await()
 
     suspend fun searchBook(
@@ -44,15 +45,15 @@ object LibraryManagementSystemNetwork {
 
     suspend fun searchBookInfo(
         token: String,
-        title: String
-    ) = bookService.searchBookInfo(token, title).await()
+        id: String
+    ) = bookService.searchBookInfo(token, id).await()
 
     suspend fun borrowBook(
         token: String,
-        title: String,
+        bookId: String,
         userId: String,
-        returnTime: String
-    ) = bookService.borrowBook(token, title, userId, returnTime).await()
+        returnDate: String
+    ) = bookService.borrowBook(token, bookId, userId, returnDate).await()
 
     suspend fun searchUserBook(
         token: String,

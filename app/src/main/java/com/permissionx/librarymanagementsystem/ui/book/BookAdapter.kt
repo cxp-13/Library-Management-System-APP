@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.permissionx.librarymanagementsystem.R
+import com.permissionx.librarymanagementsystem.logic.model.Book
 import com.permissionx.librarymanagementsystem.logic.model.BookResponse
 import com.permissionx.librarymanagementsystem.ui.user.UserModel
 import com.permissionx.librarymanagementsystem.util.showSnackbar
@@ -19,7 +20,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class BookAdapter(
-    val books: List<BookResponse.Book>?,
+    val books: List<Book>?,
     val viewModel: BookViewModel,
     val userModel: UserModel,
     val navController: NavController,
@@ -53,7 +54,7 @@ class BookAdapter(
             val position = holder.bindingAdapterPosition
             val book = books?.get(position)
 //            存储选中的图书，方便后续的借阅
-            viewModel.searchBookInfo(book!!.title)
+            viewModel.searchBookInfo(book!!.id)
 //            图书详情页是否显示借阅按钮
             val bundle = bundleOf("showBorrowingBtn" to showReturnTime)
             navController.navigate(R.id.bookInfoFragment, bundle)
@@ -68,9 +69,9 @@ class BookAdapter(
         holder.bookType.text = book?.category
         holder.bookCount.text = book?.count.toString()
         holder.bookLocation.text = book?.bookshelfLocation
-//        是否展示图书归还日期
+//是否展示图书归还日期
         if (showReturnTime) {
-            val date = Date(book!!.returnTime)
+            val date = Date(book!!.returnDate[0])
             val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
             holder.bookReturnDate.text = simpleDateFormat.format(date)
         } else {
@@ -78,10 +79,10 @@ class BookAdapter(
         }
 //删除图书
         holder.deleteBookFab.setOnClickListener {
-            val user = userModel.userLiveData.value?.getOrNull()
+            val user = userModel.userLiveData.value
             if (user != null) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val result = viewModel.deleteBook(book!!.title).getOrNull()
+                    val result = viewModel.deleteBook(book!!.id).getOrNull()
                     holder.itemView.showSnackbar("$result")
                 }
             } else {
@@ -90,11 +91,11 @@ class BookAdapter(
         }
         //更新图书
         holder.updateBookFab.setOnClickListener {
-            val user = userModel.userLiveData.value?.getOrNull()
+            val user = userModel.userLiveData.value
             if (user != null) {
+                viewModel.searchBookInfo(book!!.id)
                 navController.navigate(
                     R.id.action_bookFragment_to_addBookFragment,
-                    bundleOf("title" to book?.title, "body" to book?.body)
                 )
             } else {
                 holder.bookId.showSnackbar("The user is not logged in")

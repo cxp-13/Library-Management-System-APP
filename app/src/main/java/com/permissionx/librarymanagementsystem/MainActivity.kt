@@ -72,11 +72,10 @@ class MainActivity : AppCompatActivity() {
                 val username = headView?.findViewById<TextView>(R.id.username)
                 val userId = headView?.findViewById<TextView>(R.id.user_id)
 
-                userModel.userLiveData.observe(drawerView.findViewTreeLifecycleOwner()!!){
-                    val user = it.getOrNull()
-                    username!!.text = user?.name
+                userModel.userLiveData.observe(drawerView.findViewTreeLifecycleOwner()!!) {
+                    val user = it
+                    username!!.text = user?.username
                     userId!!.text = user?.id.toString()
-
                 }
 
             }

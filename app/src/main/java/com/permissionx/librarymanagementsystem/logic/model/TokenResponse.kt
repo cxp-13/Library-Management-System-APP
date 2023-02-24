@@ -1,11 +1,8 @@
 package com.permissionx.librarymanagementsystem.logic.model
 
 data class TokenResponse(
-    val meta: Meta,
-    val token: String
-){
-    data class Meta(
-        val msg: String,
-        val status: Int
-    )
+    val data: Data,
+    val meta: Meta
+) {
+    data class Data(val token: String, val id: String)
 }

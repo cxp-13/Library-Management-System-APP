@@ -44,7 +44,7 @@ class MyBookFragment : Fragment() {
         val recyclerView = binding?.recyclerView
         recyclerView?.layoutManager = linearLayoutManager
 //        图书列表展示
-        val user = userModel.userLiveData.value?.getOrNull()
+        val user = userModel.userLiveData.value
         if (user == null) {
             binding?.root?.showSnackbar("The user is not logged in")
         } else {

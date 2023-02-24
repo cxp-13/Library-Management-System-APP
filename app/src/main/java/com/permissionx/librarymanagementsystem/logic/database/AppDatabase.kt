@@ -9,7 +9,7 @@ import com.permissionx.librarymanagementsystem.logic.dao.UserDao
 import com.permissionx.librarymanagementsystem.logic.model.BookResponse
 import com.permissionx.librarymanagementsystem.logic.model.UserResponse
 
-@Database(entities = [UserResponse.User::class, BookResponse.Book::class], version = 1)
+//@Database(entities = [UserResponse.User::class, BookResponse.Book::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
