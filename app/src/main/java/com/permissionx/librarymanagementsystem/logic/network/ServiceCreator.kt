@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ServiceCreator {
 
     //    const val BASE_URL = "http://routn.nat300.top/api/public/v1/"
-    private const val BASE_URL = "http://192.168.0.112:8080/api/public/v1/"
+    private const val BASE_URL = "http://192.168.0.110:8080/api/public/v1/"
 
 
     private val retrofit: Retrofit =

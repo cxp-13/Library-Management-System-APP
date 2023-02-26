@@ -26,39 +26,39 @@ object LibraryManagementSystemNetwork {
     suspend fun addBook(
         token: String,
         book: Book
-    ) = bookService.addBook(token, book).await()
+    ) = bookService.addBook("Bearer $token", book).await()
 
     suspend fun deleteBook(
         token: String,
         id: String
-    ) = bookService.deleteBook(token, id).await()
+    ) = bookService.deleteBook("Bearer $token", id).await()
 
     suspend fun updateBook(
         token: String,
         book: Book
-    ) = bookService.updateBook(token,book).await()
+    ) = bookService.updateBook("Bearer $token", book).await()
 
     suspend fun searchBook(
         token: String,
         title: String
-    ) = bookService.searchBook(token, title).await()
+    ) = bookService.searchBook("Bearer $token", title).await()
 
     suspend fun searchBookInfo(
         token: String,
         id: String
-    ) = bookService.searchBookInfo(token, id).await()
+    ) = bookService.searchBookInfo("Bearer $token", id).await()
 
     suspend fun borrowBook(
         token: String,
         bookId: String,
         userId: String,
         returnDate: String
-    ) = bookService.borrowBook(token, bookId, userId, returnDate).await()
+    ) = bookService.borrowBook("Bearer $token", bookId, userId, returnDate).await()
 
     suspend fun searchUserBook(
         token: String,
         userId: String
-    ) = bookService.searchUserBook(token, userId).await()
+    ) = bookService.searchUserBook("Bearer $token", userId).await()
 
     private suspend fun <T> Call<T>.await(): T {
         return suspendCoroutine {
