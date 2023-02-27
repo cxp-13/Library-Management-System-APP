@@ -10,14 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.permissionx.librarymanagementsystem.R
 import com.permissionx.librarymanagementsystem.logic.model.Book
-import com.permissionx.librarymanagementsystem.logic.model.BookResponse
 import com.permissionx.librarymanagementsystem.ui.user.UserModel
 import com.permissionx.librarymanagementsystem.util.showSnackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
 class BookAdapter(
     val books: List<Book>?,
@@ -70,10 +67,11 @@ class BookAdapter(
         holder.bookCount.text = book?.count.toString()
         holder.bookLocation.text = book?.bookshelfLocation
 //是否展示图书归还日期
-        if (showReturnTime) {
-            val date = Date(book!!.returnDate[0])
-            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
-            holder.bookReturnDate.text = simpleDateFormat.format(date)
+        if (book!!.returnDate.isNotEmpty() && showReturnTime) {
+//            val date = Date(book!!.returnDate[0])
+//            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.CHINA)
+//            holder.bookReturnDate.text = simpleDateFormat.format(date)
+            holder.bookReturnDate.text = book.returnDate[0]
         } else {
             holder.bookReturnDate.visibility = View.GONE
         }

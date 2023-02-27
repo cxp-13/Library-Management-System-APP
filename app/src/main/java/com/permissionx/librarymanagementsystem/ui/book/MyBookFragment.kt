@@ -1,26 +1,17 @@
 package com.permissionx.librarymanagementsystem.ui.book
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.Orientation
-import androidx.recyclerview.widget.RecyclerView.VERTICAL
-import com.permissionx.librarymanagementsystem.R
-import com.permissionx.librarymanagementsystem.databinding.FragmentBookBinding
 import com.permissionx.librarymanagementsystem.databinding.FragmentMyBookBinding
-import com.permissionx.librarymanagementsystem.logic.model.BookResponse
 import com.permissionx.librarymanagementsystem.ui.user.UserModel
 import com.permissionx.librarymanagementsystem.util.showSnackbar
-import kotlinx.coroutines.launch
 
 
 class MyBookFragment : Fragment() {
@@ -52,8 +43,16 @@ class MyBookFragment : Fragment() {
         }
         viewModel.showMyBooks.observe(viewLifecycleOwner) {
             val books = it.getOrNull()
-            val bookAdapter = BookAdapter(books, viewModel, userModel, findNavController(), true)
-            recyclerView?.adapter = bookAdapter
+            if (books != null) {
+                val bookAdapter =
+                    BookAdapter(books, viewModel, userModel, findNavController(), true)
+                recyclerView?.adapter = bookAdapter
+            } else {
+                val errorMsg = it.exceptionOrNull()?.message
+                Log.d("test", "onActivityCreated: $errorMsg")
+                binding?.root?.showSnackbar(errorMsg ?: "错误")
+            }
+
         }
     }
 

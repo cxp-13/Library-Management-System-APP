@@ -9,14 +9,12 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.permissionx.librarymanagementsystem.R
 import com.permissionx.librarymanagementsystem.databinding.FragmentAddBookBinding
 import com.permissionx.librarymanagementsystem.logic.model.Book
-import com.permissionx.librarymanagementsystem.logic.model.BookResponse
 import com.permissionx.librarymanagementsystem.util.showSnackbar
 import kotlinx.coroutines.launch
 
@@ -81,7 +79,7 @@ class AddBookFragment : Fragment() {
                             id = bookId,
 //                            title = "$newTitle&$title",
                             title = newTitle,
-                            count = count.toLong(),
+                            count = count.toLongOrNull() ?: 1,
                             bookshelfLocation = location,
                             body = body,
                             category = type

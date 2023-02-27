@@ -9,6 +9,6 @@ data class Book(
     @SerializedName("bookshelf_location") val bookshelfLocation: String = "",
     val category: String = "",
     val count: Long = 0,
-    @SerializedName("return_date") var returnDate: List<Long> = emptyList(),
+    @SerializedName("return_date") var returnDate: List<String> = emptyList(),
     val title: String = "",
 )

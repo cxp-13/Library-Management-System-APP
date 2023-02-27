@@ -1,11 +1,11 @@
 package com.permissionx.librarymanagementsystem.ui.book
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -59,7 +59,7 @@ class QueryBookFragment : Fragment() {
 //观察查询图书列表
         viewModel.queryBooks.observe(viewLifecycleOwner) {
             val books = it.getOrNull()
-            if (books!!.isNotEmpty()) {
+            if (books != null) {
                 viewModel.books.apply {
                     clear()
                     addAll(books)
@@ -70,7 +70,8 @@ class QueryBookFragment : Fragment() {
                     clear()
                 }
                 bookAdapter.notifyDataSetChanged()
-                binding?.search?.showSnackbar("Failed to query the data")
+                val errorMsg = it.exceptionOrNull()?.message
+                binding?.search?.showSnackbar("$errorMsg")
             }
         }
         return binding?.root

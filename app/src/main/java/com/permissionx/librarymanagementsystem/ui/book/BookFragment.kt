@@ -55,9 +55,10 @@ class BookFragment : Fragment() {
                 recyclerView?.layoutManager = staggeredGridLayoutManager
                 recyclerView?.adapter = bookAdapter
             } else {
-                val errorMsg = it.exceptionOrNull()
-                Log.d("test", "onActivityCreated: ${errorMsg?.message}")
-                binding?.swipeRefresh?.showSnackbar(errorMsg?.message!!)
+                val errorMsg = it.exceptionOrNull()?.message
+                Log.d("test", "onActivityCreated: $errorMsg")
+                binding?.swipeRefresh?.showSnackbar(errorMsg ?: "错误")
+
             }
         }
         // 添加图书悬浮按钮
