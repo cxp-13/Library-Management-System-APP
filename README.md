@@ -1,38 +1,44 @@
-# 图书馆书籍管理系统设计android端
+# 图书馆管理系统 App
 
-#### 介绍
-1.实现用户系统登录、验证、超时归还提醒等功能；
-2.管理员对图书信息增删改等操作，管理员对图书的管理及权限分配等。
-3.图书信息查询、借阅登记、归还时间、所在书架位置等；
-#### 软件架构
+图书馆管理系统 App 是一款用于图书馆管理的移动应用，提供了用户系统登录、验证、超时归还提醒、管理员对图书信息的增删改操作、管理员对图书的管理及权限分配等功能，同时还包括图书信息查询、借阅登记、归还时间、所在书架位置等功能。
+
+## 功能特性
+
+- 用户系统登录和验证功能，确保用户信息安全。
+- 超时归还提醒功能，提醒用户及时归还借阅的图书。
+- 管理员权限控制功能，限制只有管理员账号可以进行图书信息的增删改操作。
+- 图书信息查询功能，用户可以通过关键词、作者、分类等方式查询图书信息。
+- 借阅登记功能，用户可以登记借阅的图书信息。
+- 归还时间管理功能，用户可以查看借阅图书的归还时间。
+- 所在书架位置功能，用户可以查看图书在图书馆中的位置。
+
+## 软件架构
 软件架构说明
 ![输入图片说明](app/src/main/res/drawable/UML%20%E5%9B%BE.jpg)
 
-#### 安装教程
+## 安装和使用
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+### 安装
 
-#### 使用说明
+1. 克隆或下载项目代码到本地。
+2. 使用 Android Studio 打开项目。
+3. 在 Android Studio 中运行项目，安装 App 到模拟器或真实设备上。
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+### 使用
 
-#### 参与贡献
+1. 打开 App，进行用户系统登录，验证用户身份。
+2. 用户登录成功后，可以浏览图书信息，查询图书、登记借阅、查看归还时间等。
+3. 管理员登录成功后，可以进行图书信息的增删改操作，并管理用户权限。
+4. 超时归还提醒功能会在用户借阅的图书超过归还时间时提醒用户归还图书。
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+## 贡献者
+
+- [Contributor 1](https://github.com/contributor1) - 贡献内容 1
+- [Contributor 2](https://github.com/contributor2) - 贡献内容 2
+
+## 许可证
+
+本项目采用 [MIT License](LICENSE) 许可证。
 
 
-#### 特技
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
